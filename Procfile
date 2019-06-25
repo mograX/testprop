@@ -1,1 +1,1 @@
-worker: python football_new6(plus)_break_handicap+2.py
+worker: python main.py
