@@ -49,10 +49,10 @@ def league_find_match(html, data_print):
 
                 #score for if
                 score_for_if = 0
-                handicap_for_if = handicap_1team_value_and_ratio[0].replace('-', '').replace('+', '').replace('(', '').replace(')', '').replace('.', ',')
-                if score[0] >= score[1]:
+                handicap_for_if = handicap_1team_value_and_ratio[0].replace('-', '').replace('+', '').replace('(', '').replace(')', '')
+                if score[0] > score[1]:
                     score_for_if = int(handicap_for_if[0]) - (int(score[0]) - int(score[1]))
-                else:
+                if score[0] < score[1]:
                     score_for_if = int(handicap_for_if[0]) - (int(score[1]) - int(score[0]))
 
 
@@ -180,13 +180,24 @@ for i in itertools.count():
              #pars clossed leagues
             try:
                 leagues_clossed = soup.find_all('div', class_ = 'category-container collapsed')
+                league_number = 0
+                league_number_all = len(leagues_clossed)
                 for url_leagues_clossed in leagues_clossed:
-                     url_league_for_def = leagues_clossed.find(class_='category-label-link').get('href')
+                     time.sleep(0.3)
+
+                     url_league_for_def = url_leagues_clossed.find(class_='category-label-link').get('href')
                      url_league_for_def = url_league_for_def.split()
-                     data_for_print = league_find_match(BeautifulSoup(get_html('https://www.marathonbet.ru' + url_league_for_def[0]), 'lxml'), data_for_print)
-                     print('PARS URL')
-            except Exception:
-                pass
+                     clossed_html = BeautifulSoup(get_html('https://www.marathonbet.ru' + url_league_for_def[0]), 'lxml')
+
+                     league_number += 1
+                     print(league_number, ' of ', league_number_all)
+
+                     league_name = clossed_html.find(class_='category-label simple-live').text.strip()
+                     print(league_name)
+
+                     data_for_print = league_find_match(clossed_html, data_for_print)
+            except Exception as i:
+                print(i)
             print('Data before time def')
             print(data_for_print)
             print('Data after time def')
@@ -201,7 +212,7 @@ for i in itertools.count():
             bot_sendler(tg_data_send)
             localtime = time.asctime(time.localtime(time.time()))
             print("Текущее локальное время :", localtime)
-    except Exception:
-        print('connection error')
+    except Exception as i:
+        print('connection error', i)
 
 
