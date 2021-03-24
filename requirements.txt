@@ -23,7 +23,7 @@ pyTelegramBotAPI==3.6.6
 python-telegram-bot==12.0.0b1
 requests==2.10.0
 requests-oauthlib==1.2.0
-rsa==4.0
+rsa==4.1
 six==1.12.0
 soupsieve==1.9.1
 tornado==6.0.2
